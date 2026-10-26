@@ -203,6 +203,19 @@ class TestToolRegistration:
             assert "minutes" in properties
             assert "seconds" in properties
 
+    @pytest.mark.asyncio
+    async def test_all_tools_annotated_read_only(self, valid_env_config: dict[str, str]) -> None:
+        """Every tool is read-only, so each must say so in its annotations."""
+        async with Client(app) as client:
+            tools = await client.list_tools()
+
+            not_read_only = [
+                tool.name
+                for tool in tools
+                if tool.annotations is None or tool.annotations.readOnlyHint is not True
+            ]
+            assert not_read_only == []
+
 
 class TestToolExecution:
     """Tests for tool execution through the MCP protocol."""

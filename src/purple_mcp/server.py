@@ -47,6 +47,7 @@ from typing import Literal
 
 import fastmcp
 from fastmcp.server.http import StarletteWithLifespan
+from mcp.types import ToolAnnotations
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 
@@ -138,42 +139,70 @@ initialize_logfire()
 
 app: fastmcp.FastMCP[None] = fastmcp.FastMCP("PurpleAIMCP")
 
+# Every tool only reads (the service is read-only, see README), so tell clients
+# they can skip the confirmation they would ask for before a write.
+READ_ONLY = ToolAnnotations(readOnlyHint=True)
+
 # Register MCP tools
-app.tool(description=PURPLE_AI_DESCRIPTION)(purple_ai)
-app.tool(description=POWERQUERY_DESCRIPTION)(powerquery)
-app.tool(description=GET_TIMESTAMP_RANGE_DESCRIPTION)(get_timestamp_range)
-app.tool(description=ISO_TO_UNIX_TIMESTAMP_DESCRIPTION)(iso_to_unix_timestamp)
-app.tool(description=GET_ALERT_DESCRIPTION)(get_alert)
-app.tool(description=LIST_ALERTS_DESCRIPTION)(list_alerts)
-app.tool(description=SEARCH_ALERTS_DESCRIPTION)(search_alerts)
-app.tool(description=GET_ALERT_NOTES_DESCRIPTION)(get_alert_notes)
-app.tool(description=GET_ALERT_HISTORY_DESCRIPTION)(get_alert_history)
-app.tool(description=GET_ALERT_INVESTIGATION_REPORT_DESCRIPTION)(get_alert_investigation_report)
-app.tool(description=GET_MISCONFIGURATION_DESCRIPTION)(get_misconfiguration)
-app.tool(description=LIST_MISCONFIGURATIONS_DESCRIPTION)(list_misconfigurations)
-app.tool(description=SEARCH_MISCONFIGURATIONS_DESCRIPTION)(search_misconfigurations)
-app.tool(description=GET_MISCONFIGURATION_NOTES_DESCRIPTION)(get_misconfiguration_notes)
-app.tool(description=GET_MISCONFIGURATION_HISTORY_DESCRIPTION)(get_misconfiguration_history)
-app.tool(description=GET_VULNERABILITY_DESCRIPTION)(get_vulnerability)
-app.tool(description=LIST_VULNERABILITIES_DESCRIPTION)(list_vulnerabilities)
-app.tool(description=SEARCH_VULNERABILITIES_DESCRIPTION)(search_vulnerabilities)
-app.tool(description=GET_VULNERABILITY_NOTES_DESCRIPTION)(get_vulnerability_notes)
-app.tool(description=GET_VULNERABILITY_HISTORY_DESCRIPTION)(get_vulnerability_history)
-app.tool(description=GET_INVENTORY_ITEM_DESCRIPTION)(get_inventory_item)
-app.tool(description=LIST_INVENTORY_ITEMS_DESCRIPTION)(list_inventory_items)
-app.tool(description=SEARCH_INVENTORY_ITEMS_DESCRIPTION)(search_inventory_items)
-app.tool(description=THREAT_INTEL_BY_HASH_DESCRIPTION)(threat_intel_by_hash)
-app.tool(description=THREAT_INTEL_BY_URL_DESCRIPTION)(threat_intel_by_url)
-app.tool(description=THREAT_INTEL_BY_DOMAIN_DESCRIPTION)(threat_intel_by_domain)
-app.tool(description=THREAT_INTEL_BY_IP_DESCRIPTION)(threat_intel_by_ip)
-app.tool(description=THREAT_INTEL_GET_FILE_RELATIONSHIPS_DESCRIPTION)(
+app.tool(annotations=READ_ONLY, description=PURPLE_AI_DESCRIPTION)(purple_ai)
+app.tool(annotations=READ_ONLY, description=POWERQUERY_DESCRIPTION)(powerquery)
+app.tool(annotations=READ_ONLY, description=GET_TIMESTAMP_RANGE_DESCRIPTION)(get_timestamp_range)
+app.tool(annotations=READ_ONLY, description=ISO_TO_UNIX_TIMESTAMP_DESCRIPTION)(
+    iso_to_unix_timestamp
+)
+app.tool(annotations=READ_ONLY, description=GET_ALERT_DESCRIPTION)(get_alert)
+app.tool(annotations=READ_ONLY, description=LIST_ALERTS_DESCRIPTION)(list_alerts)
+app.tool(annotations=READ_ONLY, description=SEARCH_ALERTS_DESCRIPTION)(search_alerts)
+app.tool(annotations=READ_ONLY, description=GET_ALERT_NOTES_DESCRIPTION)(get_alert_notes)
+app.tool(annotations=READ_ONLY, description=GET_ALERT_HISTORY_DESCRIPTION)(get_alert_history)
+app.tool(annotations=READ_ONLY, description=GET_ALERT_INVESTIGATION_REPORT_DESCRIPTION)(
+    get_alert_investigation_report
+)
+app.tool(annotations=READ_ONLY, description=GET_MISCONFIGURATION_DESCRIPTION)(get_misconfiguration)
+app.tool(annotations=READ_ONLY, description=LIST_MISCONFIGURATIONS_DESCRIPTION)(
+    list_misconfigurations
+)
+app.tool(annotations=READ_ONLY, description=SEARCH_MISCONFIGURATIONS_DESCRIPTION)(
+    search_misconfigurations
+)
+app.tool(annotations=READ_ONLY, description=GET_MISCONFIGURATION_NOTES_DESCRIPTION)(
+    get_misconfiguration_notes
+)
+app.tool(annotations=READ_ONLY, description=GET_MISCONFIGURATION_HISTORY_DESCRIPTION)(
+    get_misconfiguration_history
+)
+app.tool(annotations=READ_ONLY, description=GET_VULNERABILITY_DESCRIPTION)(get_vulnerability)
+app.tool(annotations=READ_ONLY, description=LIST_VULNERABILITIES_DESCRIPTION)(list_vulnerabilities)
+app.tool(annotations=READ_ONLY, description=SEARCH_VULNERABILITIES_DESCRIPTION)(
+    search_vulnerabilities
+)
+app.tool(annotations=READ_ONLY, description=GET_VULNERABILITY_NOTES_DESCRIPTION)(
+    get_vulnerability_notes
+)
+app.tool(annotations=READ_ONLY, description=GET_VULNERABILITY_HISTORY_DESCRIPTION)(
+    get_vulnerability_history
+)
+app.tool(annotations=READ_ONLY, description=GET_INVENTORY_ITEM_DESCRIPTION)(get_inventory_item)
+app.tool(annotations=READ_ONLY, description=LIST_INVENTORY_ITEMS_DESCRIPTION)(list_inventory_items)
+app.tool(annotations=READ_ONLY, description=SEARCH_INVENTORY_ITEMS_DESCRIPTION)(
+    search_inventory_items
+)
+app.tool(annotations=READ_ONLY, description=THREAT_INTEL_BY_HASH_DESCRIPTION)(threat_intel_by_hash)
+app.tool(annotations=READ_ONLY, description=THREAT_INTEL_BY_URL_DESCRIPTION)(threat_intel_by_url)
+app.tool(annotations=READ_ONLY, description=THREAT_INTEL_BY_DOMAIN_DESCRIPTION)(
+    threat_intel_by_domain
+)
+app.tool(annotations=READ_ONLY, description=THREAT_INTEL_BY_IP_DESCRIPTION)(threat_intel_by_ip)
+app.tool(annotations=READ_ONLY, description=THREAT_INTEL_GET_FILE_RELATIONSHIPS_DESCRIPTION)(
     threat_intel_get_file_relationships
 )
-app.tool(description=THREAT_INTEL_SEARCH_DESCRIPTION)(threat_intel_search)
-app.tool(description=THREAT_INTEL_GET_FILE_BEHAVIOR_DESCRIPTION)(threat_intel_get_file_behavior)
-app.tool(description=CVE_SEARCH_BY_ID_DESCRIPTION)(cve_search_by_id)
-app.tool(description=CVE_SEARCH_BY_VENDOR_DESCRIPTION)(cve_search_by_vendor)
-app.tool(description=CVE_DATABASE_STATUS_DESCRIPTION)(cve_database_status)
+app.tool(annotations=READ_ONLY, description=THREAT_INTEL_SEARCH_DESCRIPTION)(threat_intel_search)
+app.tool(annotations=READ_ONLY, description=THREAT_INTEL_GET_FILE_BEHAVIOR_DESCRIPTION)(
+    threat_intel_get_file_behavior
+)
+app.tool(annotations=READ_ONLY, description=CVE_SEARCH_BY_ID_DESCRIPTION)(cve_search_by_id)
+app.tool(annotations=READ_ONLY, description=CVE_SEARCH_BY_VENDOR_DESCRIPTION)(cve_search_by_vendor)
+app.tool(annotations=READ_ONLY, description=CVE_DATABASE_STATUS_DESCRIPTION)(cve_database_status)
 
 
 @app.custom_route("/health", methods=["GET"])
